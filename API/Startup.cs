@@ -1,3 +1,7 @@
+using API.Extensions;
+using Application.Activities;
+using Application.ClientModels;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -25,30 +29,12 @@ namespace API
             this._config = config;
         }
 
-        // public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "API", Version = "v1" });
-            });
-
-            services.AddDbContext<DataContext>(opts =>
-            {
-                opts.UseSqlite(_config.GetConnectionString("DefaultConnection"));
-            });
-
-            services.AddCors(cors =>
-            {
-                cors.AddPolicy("CorsPolicy", policy =>
-                {
-                    policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();//"http://localhost:3000/"
-                });
-            });
+            services.GetServiceCollection(_config);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
