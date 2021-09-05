@@ -1,22 +1,22 @@
 import axios, { AxiosResponse } from "axios";
 import { Activity } from "../models/activity";
 
-const sleep = (delay: number) => {
-  return new Promise((resolve) => {
-    setTimeout(resolve, delay);
-  });
-};
+// const sleep = (delay: number) => {
+//   return new Promise((resolve) => {
+//     setTimeout(resolve, delay);
+//   });
+// };
 
 axios.defaults.baseURL = "http://localhost:5000/api";
-axios.interceptors.response.use(async (res) => {
-  try {
-    await sleep(1000);
-    return res;
-  } catch (err) {
-    console.log(err);
-    return await Promise.reject(err);
-  }
-});
+// axios.interceptors.response.use(async (res) => {
+//   try {
+//     await sleep(1000);
+//     return res;
+//   } catch (err) {
+//     console.log(err);
+//     return await Promise.reject(err);
+//   }
+// });
 
 const responseBody = <T>(res: AxiosResponse<T>) => res.data;
 
