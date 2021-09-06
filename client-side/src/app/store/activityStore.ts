@@ -8,7 +8,7 @@ export default class ActivityStore {
   selectedActivity: Activity | undefined = undefined;
   editMode = false;
   loading = false;
-  loadingInitial = true;
+  loadingInitial = false;
 
   constructor() {
     makeAutoObservable(this);
@@ -19,11 +19,11 @@ export default class ActivityStore {
   }
 
   loadActivities = async () => {
+    this.setLoadingInitial(true);
     try {
       await agent.activities.list().then((res) => {
         res.forEach((act) => {
-          act.date = act.date.split("T")[0];
-          this.activityRegistry.set(act.id, act);
+          this.setActivity(act);
         });
         this.setLoadingInitial(false);
       });
@@ -85,24 +85,42 @@ export default class ActivityStore {
     }
   };
 
+  loadActivity = async (id: string) => {
+    this.setLoadingInitial(true);
+    let activity = this.getActivity(id);
+    if (activity) {
+      runInAction(() => {
+        this.selectedActivity = activity;
+      });
+      this.setLoadingInitial(false);
+      return activity;
+    } else {
+      this.setLoadingInitial(true);
+      try {
+        activity = await agent.activities.details(id);
+        this.setActivity(activity);
+        runInAction(() => {
+          this.selectedActivity = activity;
+        });
+        this.setLoadingInitial(false);
+        return activity;
+      } catch (error) {
+        console.log(error);
+        this.setLoadingInitial(false);
+      }
+    }
+  };
+
+  private getActivity = (id: string) => {
+    return this.activityRegistry.get(id);
+  };
+
+  private setActivity = (activity: Activity) => {
+    activity.date = activity.date.split("T")[0];
+    this.activityRegistry.set(activity.id, activity);
+  };
+
   setLoadingInitial = (state: boolean) => {
     this.loadingInitial = state;
-  };
-
-  selectActivity = (id: string) => {
-    this.selectedActivity = this.activityRegistry.get(id);
-  };
-
-  cancelSelected = () => {
-    this.selectedActivity = undefined;
-  };
-
-  openForm = (id?: string) => {
-    id ? this.selectActivity(id) : this.cancelSelected();
-    this.editMode = true;
-  };
-
-  closeForm = () => {
-    this.editMode = false;
   };
 }
