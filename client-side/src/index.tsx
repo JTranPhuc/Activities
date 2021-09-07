@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./app/layout/style.css";
 import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
 import App from "./app/layout/App";
 import { store, StoreContext } from "./app/store/store";
 import { BrowserRouter } from "react-router-dom";
+import "react-calendar/dist/Calendar.css"
+import "./app/layout/style.css";
 ReactDOM.render(
   // <React.StrictMode></React.StrictMode>
   <StoreContext.Provider value={store}>
