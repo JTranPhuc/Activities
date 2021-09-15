@@ -1,22 +1,23 @@
-import { SyntheticEvent, useState } from "react";
+import { format } from "date-fns/esm";
+// import { SyntheticEvent, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Icon, Item, Label, Segment } from "semantic-ui-react";
+import { Button, Icon, Item, Segment } from "semantic-ui-react";
 import { Activity } from "../../../app/models/activity";
-import { useStore } from "../../../app/store/store";
+// import { useStore } from "../../../app/store/store";
 
 interface Props {
   activity: Activity;
 }
 
 const ActivityListItem = ({ activity: act }: Props) => {
-  const [target, setTarget] = useState("");
-  const { activityStore } = useStore();
-  const { loading, deleteActivity } = activityStore;
+  // const [target, setTarget] = useState("");
+  // const { activityStore } = useStore();
+  // const { loading, deleteActivity } = activityStore;
 
-  const deleteSelectedActivity = (e: SyntheticEvent<HTMLButtonElement>, id: string) => {
-    setTarget(e.currentTarget.name);
-    deleteActivity(id);
-  };
+  // const deleteSelectedActivity = (e: SyntheticEvent<HTMLButtonElement>, id: string) => {
+  //   setTarget(e.currentTarget.name);
+  //   deleteActivity(id);
+  // };
 
   return (
     <Segment.Group>
@@ -33,11 +34,11 @@ const ActivityListItem = ({ activity: act }: Props) => {
           </Item>
         </Item.Group>
       </Segment>
-      
+
       <Segment>
         <span>
           <Icon name="clock" />
-          {act.date}
+          {format(act.date!, "dd MMM yyyy h:mm aa")}
           <Icon name="marker" />
           {act.venue}
         </span>

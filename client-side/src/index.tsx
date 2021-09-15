@@ -4,15 +4,21 @@ import reportWebVitals from "./reportWebVitals";
 import "semantic-ui-css/semantic.min.css";
 import App from "./app/layout/App";
 import { store, StoreContext } from "./app/store/store";
-import { BrowserRouter } from "react-router-dom";
+import {createBrowserHistory} from "history"
+import { Router } from "react-router-dom";
 import "react-calendar/dist/Calendar.css"
+import 'react-toastify/dist/ReactToastify.min.css';
+import "react-datepicker/dist/react-datepicker.css";
 import "./app/layout/style.css";
+
+export const history = createBrowserHistory();
+
 ReactDOM.render(
-  // <React.StrictMode></React.StrictMode>
-  <StoreContext.Provider value={store}>
-    <BrowserRouter>
+
+<StoreContext.Provider value={store}>
+    <Router history={history}>
       <App />
-    </BrowserRouter>
+    </Router>
   </StoreContext.Provider>,
   document.getElementById("root")
 );
